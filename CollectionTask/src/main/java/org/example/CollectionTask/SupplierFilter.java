@@ -5,14 +5,14 @@ import java.util.List;
 
 public class SupplierFilter {
 
-    public static <T> List<T> filter(T[] array, StringToUpperFilter filterClass) {
+    public static List<String> filter(Object[] array, StringToUpperFilter filterClass) {
         if (array.length == 0) {
             return null;
         }
-        List<T> result = new ArrayList<>();
-        for (T element : array) {
+        List<String> result = new ArrayList<>();
+        for (Object element : array) {
             if (element != null) {
-                result.add(filterClass.apply(element));
+                result.add((String) filterClass.apply(element));
             }
         }
         return result;

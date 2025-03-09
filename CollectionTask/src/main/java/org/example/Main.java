@@ -5,6 +5,7 @@ import org.example.CollectionTask.SupplierFilter;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class Main {
     public static void main(String[] args) {
