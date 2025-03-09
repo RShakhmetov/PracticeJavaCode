@@ -1,16 +1,19 @@
 package org.example;
 
-import org.example.CollectionTask.FilterClass;
+import org.example.CollectionTask.StringToUpperFilter;
 import org.example.CollectionTask.SupplierFilter;
+
+import java.util.List;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
-        String[] array = {"hello", "", "world", "java", ""};
-        FilterClass filter = new FilterClass();
+        Object[] array = {"hello", null, List.of(1,2,3,4), "java", "2", 2};
+        StringToUpperFilter filter = new StringToUpperFilter();
 
-        String[] filteredArray = (String[]) SupplierFilter.filter(array, filter);
+        Object[] filteredArray = Objects.requireNonNull(SupplierFilter.filter(array, filter)).toArray();
 
-        for (String element : filteredArray) {
+        for (Object element : filteredArray) {
             System.out.println(element);
         }
     }

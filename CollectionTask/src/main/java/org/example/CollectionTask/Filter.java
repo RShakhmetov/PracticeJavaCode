@@ -1,5 +1,5 @@
 package org.example.CollectionTask;
 
 public interface Filter {
-    Object apply (Object o);
+    <T> T apply (T o);
 }

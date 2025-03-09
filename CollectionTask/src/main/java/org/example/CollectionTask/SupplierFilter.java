@@ -1,21 +1,20 @@
 package org.example.CollectionTask;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SupplierFilter {
 
-    public static Object[] filter(Object[] array, FilterClass filterClass) {
+    public static <T> List<T> filter(T[] array, StringToUpperFilter filterClass) {
         if (array.length == 0) {
             return null;
         }
-        Object[] resultArray = (Object[]) Array.newInstance(array.getClass().getComponentType(), array.length);
-        int count = 0;
-        for (Object element : array) {
-            Object filteredElement = filterClass.apply(element);
-            if (filteredElement != null) {
-                resultArray[count++] = filterClass.apply(element);
+        List<T> result = new ArrayList<>();
+        for (T element : array) {
+            if (element != null) {
+                result.add(filterClass.apply(element));
             }
         }
-        return resultArray;
+        return result;
     }
 }
