@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/CollectionMapTask" />
             <option value="$PROJECT_DIR$/CollectionTask" />
             <option value="$PROJECT_DIR$/ConcurrencyBlockingQueueTask" />
+            <option value="$PROJECT_DIR$/ConcurrentBankTask" />
           </set>
         </option>
       </GradleProjectSettings>
