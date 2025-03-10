@@ -1,32 +1,40 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConcurrentBank {
 
-    private final List<BankAccount> bankAccounts = new ArrayList<BankAccount>();
+    private final CopyOnWriteArrayList<BankAccount> bankAccounts = new CopyOnWriteArrayList<>();
 
-    private BankAccount account;
-
-    public BankAccount createAccount(long balance) {
-        account = new BankAccount(balance);
+    public synchronized BankAccount createAccount(long balance) {
+        BankAccount account = new BankAccount(balance);
         bankAccounts.add(account);
         return account;
     }
 
-    public synchronized void transfer(BankAccount from, BankAccount to, long amount) {
-        if (from.getBalance() >= amount) {
-            from.withdraw(amount);
-            to.deposit(amount);
+    public void transfer(BankAccount from, BankAccount to, long amount) {
+        ReentrantLock firstLock = from.getLock();
+        ReentrantLock secondLock = to.getLock();
+        firstLock.lock();
+        try {
+            secondLock.lock();
+            try {
+                if (from.withdraw(amount)) {
+                    to.deposit(amount);
+                }
+            } finally {
+                secondLock.unlock();
+            }
+        } finally {
+            firstLock.unlock();
         }
     }
 
     public long getTotalBalance() {
-        long sum = 0;
-        for (BankAccount bankAccount : bankAccounts) {
-            sum += bankAccount.getBalance();
-        }
-        return sum;
+        AtomicLong sum = new AtomicLong();
+        bankAccounts.forEach(x-> sum.addAndGet(x.getBalance()));
+        return sum.get();
     }
 }
