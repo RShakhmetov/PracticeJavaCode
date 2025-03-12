@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/CollectionTask" />
             <option value="$PROJECT_DIR$/ConcurrencyBlockingQueueTask" />
             <option value="$PROJECT_DIR$/ConcurrentBankTask" />
+            <option value="$PROJECT_DIR$/ConcurrentExecutor" />
           </set>
         </option>
       </GradleProjectSettings>
