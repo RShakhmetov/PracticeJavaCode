@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/ConcurrentBankTask" />
             <option value="$PROJECT_DIR$/ConcurrentExecutor" />
             <option value="$PROJECT_DIR$/StreamAggregation" />
+            <option value="$PROJECT_DIR$/StreamApiForkJoinPool" />
             <option value="$PROJECT_DIR$/StreamApiTask" />
           </set>
         </option>
