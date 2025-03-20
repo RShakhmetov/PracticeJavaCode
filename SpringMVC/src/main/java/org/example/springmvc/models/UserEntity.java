@@ -1,9 +1,7 @@
 package org.example.springmvc.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +14,26 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@Table(name = "users")
+public class UserEntity {
+
+    public interface UserSummary {
+    }
+
+    public interface UserDetails extends UserSummary {
+    }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonView(UserSummary.class)
     private String name;
 
+    @JsonView(UserSummary.class)
     private String email;
 
-    @OneToMany
-    private List<Order> orders;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonView(UserDetails.class)
+    private List<OrderEntity> orders;
 }
