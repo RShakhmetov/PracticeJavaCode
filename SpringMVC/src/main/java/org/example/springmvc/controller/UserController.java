@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/users")
     @JsonView(UserEntity.UserSummary.class)
-    public ResponseEntity<List<UserEntity>> getUser() {
+    public ResponseEntity<List<UserEntity>> getUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

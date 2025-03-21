@@ -3,7 +3,6 @@ package org.example.springmvc.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.springmvc.DTO.User;
-import org.example.springmvc.global_handler.CustomException;
 import org.example.springmvc.models.UserEntity;
 import org.example.springmvc.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -18,24 +17,19 @@ public class UserService {
 
     public UserEntity getUser(Long id) {
         if (userRepository.findById(id).isEmpty()) {
-            throw new CustomException("User with id " + id + " does`t exist");
+            throw new RuntimeException("User with id " + id + " does`t exist");
         } else {
             return userRepository.findById(id).get();
         }
     }
 
     public List<UserEntity> getAllUsers() {
-        List<UserEntity> users = userRepository.findAll();
-        if (users.isEmpty()) {
-            throw new CustomException("Repository is empty");
-        } else {
-            return userRepository.findAll();
-        }
+        return userRepository.findAll();
     }
 
     public UserEntity createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new CustomException("User already exists");
+            throw new RuntimeException("User already exists");
         } else {
             UserEntity newUser = new UserEntity();
             newUser.setEmail(user.getEmail());
@@ -54,7 +48,7 @@ public class UserService {
             userRepository.save(userEntity);
             return userEntity;
         } else {
-            throw new CustomException("User with id " + id + " does`t exist");
+            throw new RuntimeException("User with id " + id + " does`t exist");
         }
     }
 
@@ -64,7 +58,7 @@ public class UserService {
             userRepository.deleteById(id);
             return user;
         } else {
-            throw new CustomException("User with id " + id + " does`t exist");
+            throw new RuntimeException("User with id " + id + " does`t exist");
         }
     }
 }

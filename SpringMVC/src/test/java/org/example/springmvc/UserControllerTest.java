@@ -1,9 +1,10 @@
 package org.example.springmvc;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.springmvc.DTO.User;
 import org.example.springmvc.controller.UserController;
 import org.example.springmvc.models.OrderEntity;
 import org.example.springmvc.models.UserEntity;
-import org.example.springmvc.repository.UserRepository;
 import org.example.springmvc.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,9 +35,6 @@ public class UserControllerTest {
 
     @Mock
     private UserService userService;
-
-    @Mock
-    private UserRepository userRepository;
 
     @InjectMocks
     private UserController userController;
@@ -66,10 +63,15 @@ public class UserControllerTest {
 
         when(userService.getAllUsers()).thenReturn(users);
 
-        mockMvc.perform(get("/api/users")
+        mockMvc.perform(get("/api/v1/users")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect()
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("Thomas"))
+                .andExpect(jsonPath("$[0].email").value("peakyblinders@mail.ru"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].name").value("Arthur"))
+                .andExpect(jsonPath("$[1].email").value("arthur@mail.ru"));
     }
 
     @Test
@@ -87,31 +89,34 @@ public class UserControllerTest {
 
         user.setOrders(List.of(order1));
 
-        when(userService.getUser(1L)).thenReturn(user);
+        when(userService.getUser(user.getId())).thenReturn(user);
 
-        mockMvc.perform(get("/api/users/1")
+        mockMvc.perform(get("/api/v1/user/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Thomas"))
                 .andExpect(jsonPath("$.email").value("peakyblinders@mail.ru"))
-                .andExpect(jsonPath("$.orders[0].product").value("Product 1"))
-                .andExpect(jsonPath("$.orders[0].totalAmount").value(100.0))
+                .andExpect(jsonPath("$.orders[0].cost").value(1000L))
                 .andExpect(jsonPath("$.orders[0].status").value("COMPLETED"));
     }
 
     @Test
     public void testCreateUser() throws Exception {
-        UserEntity user = new UserEntity();
-        user.setName("Thomas");
-        user.setEmail("peakyblinders@mail.ru");
+        User user = new User();
+        user.setName("Jenkins");
+        user.setEmail("lero14y@mail.ru");
 
-        when(userRepository.save(any(UserEntity.class))).thenReturn(user);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setName(user.getName());
+        userEntity.setEmail(user.getEmail());
 
-        mockMvc.perform(post("/api/users")
+        when(userService.createUser(user)).thenReturn(userEntity);
+
+        mockMvc.perform(post("/api/v1/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Thomas"))
-                .andExpect(jsonPath("$.email").value("peakyblinders@mail.ru"));
+                .andExpect(jsonPath("$.name").value("Jenkins"))
+                .andExpect(jsonPath("$.email").value("lero14y@mail.ru"));
     }
 }
