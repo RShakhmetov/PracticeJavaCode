@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -27,7 +27,7 @@ public class Order {
     private List<Product> products;
 
     @DateTimeFormat
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @NotNull(message = "shippingAddress must`t be empty")
     private String shippingAddress;

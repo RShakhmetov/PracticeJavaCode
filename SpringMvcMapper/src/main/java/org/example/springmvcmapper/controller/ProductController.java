@@ -31,7 +31,7 @@ public class ProductController {
     public ResponseEntity<Product> addProduct(@RequestBody @Valid String productJson) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(productService.addProduct(productJson)); // Сериализация
+                .body(productService.addProduct(productJson));
     }
 
     @PutMapping("/update/{id}")
