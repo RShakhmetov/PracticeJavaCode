@@ -2,7 +2,7 @@ package org.example.springdataprojections;
 
 import org.example.springdataprojections.module.Department;
 import org.example.springdataprojections.module.Employee;
-import org.example.springdataprojections.projection.EmployeeProjectionImpl;
+import org.example.springdataprojections.projection.EmployeeProjection;
 import org.example.springdataprojections.repository.EmployeeRepository;
 import org.example.springdataprojections.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,7 @@ public class TestEmployeeProjection {
     @Test
     public void testEmployeeProjection() {
         Mockito.when(employeeRepository.findAll()).thenReturn(List.of(employee));
-        List<EmployeeProjectionImpl> employeeProjections = employeeService.getAllEmployees();
+        List<EmployeeProjection> employeeProjections = employeeService.getAllEmployees();
 
         assertEquals(1, employeeProjections.size());
         assertEquals("John Smith", employeeProjections.get(0).getFullName());

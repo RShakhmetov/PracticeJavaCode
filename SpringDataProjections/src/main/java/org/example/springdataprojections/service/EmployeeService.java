@@ -3,7 +3,6 @@ package org.example.springdataprojections.service;
 import lombok.RequiredArgsConstructor;
 import org.example.springdataprojections.module.Employee;
 import org.example.springdataprojections.projection.EmployeeProjection;
-import org.example.springdataprojections.projection.EmployeeProjectionImpl;
 import org.example.springdataprojections.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,8 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public List<EmployeeProjectionImpl> getAllEmployees() {
-        return employeeRepository.findAll().stream().map(EmployeeProjectionImpl::new).toList();
+    public List<EmployeeProjection> getAllEmployees() {
+        return employeeRepository.findAllProjectedBy();
     }
 
     public Employee getEmployee(Long id) {

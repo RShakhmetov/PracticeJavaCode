@@ -3,7 +3,6 @@ package org.example.springdataprojections.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.springdataprojections.module.Employee;
 import org.example.springdataprojections.projection.EmployeeProjection;
-import org.example.springdataprojections.projection.EmployeeProjectionImpl;
 import org.example.springdataprojections.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<EmployeeProjectionImpl>> getAll() {
+    public ResponseEntity<List<EmployeeProjection>> getAll() {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
