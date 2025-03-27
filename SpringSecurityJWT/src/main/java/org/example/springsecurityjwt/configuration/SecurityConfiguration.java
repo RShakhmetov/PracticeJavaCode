@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/superadmin/**").hasAnyAuthority("SUPER_ADMIN")
                                 .requestMatchers("/user/**").hasAnyAuthority("USER")
                                 .requestMatchers("/moderator/**").hasAnyAuthority("MODERATOR")
+                                .requestMatchers("/h2-console/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
