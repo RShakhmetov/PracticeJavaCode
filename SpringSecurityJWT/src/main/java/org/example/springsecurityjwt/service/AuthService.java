@@ -1,7 +1,7 @@
 package org.example.springsecurityjwt.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springsecurityjwt.DTO.ReqRes;
+import org.example.springsecurityjwt.DTO.*;
 import org.example.springsecurityjwt.model.OurUser;
 import org.example.springsecurityjwt.model.Roles;
 import org.example.springsecurityjwt.repositories.UserRepository;
@@ -25,8 +25,8 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
 
-    public ReqRes signUp(ReqRes registerRequest) {
-        ReqRes response = new ReqRes();
+    public RegisterResponse signUp(RegisterRequest registerRequest) {
+        RegisterResponse response = new RegisterResponse();
         if (userRepository.existsByUsername(registerRequest.getName())) {
             throw new RuntimeException("Username already exists");
         }
@@ -37,19 +37,18 @@ public class AuthService {
             ourUser.setRole(Roles.valueOf(registerRequest.getRole()));
             OurUser savedUser = userRepository.save(ourUser);
             if (savedUser != null && savedUser.getId() > 0) {
-                response.setOurUsers(String.valueOf(savedUser));
                 response.setStatusCode(200);
                 response.setMessage("User Successfully Registered!");
             }
         } catch (Exception e) {
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setMessage(e.getMessage());
         }
         return response;
     }
 
-    public ReqRes signIn(ReqRes registerRequest) {
-        ReqRes response = new ReqRes();
+    public SignInResponse signIn(SignInRequest registerRequest) {
+        SignInResponse response = new SignInResponse();
         try {
             OurUser user = userRepository.findByUsername(registerRequest.getName())
                     .orElseThrow(() -> new RuntimeException("User not found"));
@@ -74,15 +73,15 @@ public class AuthService {
             userRepository.save(foundedUser);
         } catch (BadCredentialsException e) {
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setMessage(e.getMessage());
             handleFailedLogin(registerRequest.getName());
             throw new RuntimeException("Invalid credentials");
         }
         return response;
     }
 
-    public ReqRes refreshToken(ReqRes refreshTokenRegister) {
-        ReqRes response = new ReqRes();
+    public RefreshToken refreshToken(RefreshToken refreshTokenRegister) {
+        RefreshToken response = new RefreshToken();
         String ourName = jwtUtils.extractUsername(refreshTokenRegister.getToken());
         OurUser ourUser = userRepository.findByUsername(ourName).orElseThrow();
         if (jwtUtils.isTokenValid(refreshTokenRegister.getToken(), ourUser)) {

@@ -1,7 +1,6 @@
 package org.example.springsecurityjwt.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springsecurityjwt.DTO.ReqRes;
 import org.example.springsecurityjwt.model.Product;
 import org.example.springsecurityjwt.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/superadmin/addProduct")
-    public ResponseEntity<Product> createProduct(@RequestBody ReqRes registerProduct) {
+    public ResponseEntity<Product> createProduct(@RequestBody Product registerProduct) {
         return ResponseEntity.ok(productService.create(registerProduct));
     }
 

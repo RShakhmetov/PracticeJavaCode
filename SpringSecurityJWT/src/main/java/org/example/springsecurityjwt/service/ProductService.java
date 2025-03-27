@@ -1,7 +1,6 @@
 package org.example.springsecurityjwt.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springsecurityjwt.DTO.ReqRes;
 import org.example.springsecurityjwt.model.Product;
 import org.example.springsecurityjwt.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public Product create(ReqRes productRequest) {
+    public Product create(Product productRequest) {
         Product product = new Product();
         product.setName(productRequest.getName());
         return productRepository.save(product);
