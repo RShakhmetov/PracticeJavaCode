@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/SpringMvcMapper/pom.xml" />
         <option value="$PROJECT_DIR$/SpringDataJDBC/pom.xml" />
         <option value="$PROJECT_DIR$/SpringDataProjections/pom.xml" />
+        <option value="$PROJECT_DIR$/SpringSecurityJWT/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
