@@ -15,11 +15,14 @@
         <option value="$PROJECT_DIR$/SpringDataJDBC/pom.xml" />
         <option value="$PROJECT_DIR$/SpringDataProjections/pom.xml" />
         <option value="$PROJECT_DIR$/SpringSecurityJWT/pom.xml" />
+        <option value="$PROJECT_DIR$/SpringSecurityOAuth/pom.xml" />
+        <option value="$PROJECT_DIR$/OAuth/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/GeometryLibrary/pom.xml" />
+        <option value="$PROJECT_DIR$/SpringSecurityOAuth/pom.xml" />
       </set>
     </option>
   </component>
