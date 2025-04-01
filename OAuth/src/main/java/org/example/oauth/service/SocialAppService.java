@@ -1,6 +1,7 @@
 package org.example.oauth.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.oauth.model.CustomOAuth2User;
 import org.example.oauth.model.UserEntity;
 import org.example.oauth.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -13,9 +14,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
-public class SocialAppService  implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class SocialAppService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
 
@@ -26,17 +29,16 @@ public class SocialAppService  implements OAuth2UserService<OAuth2UserRequest, O
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
-        String name = oAuth2User.getAttribute("name");
-        if (oAuth2User == null) {
-            UserEntity userEntity = new UserEntity();
-            userEntity.setEmail(oAuth2User.getAttribute("email"));
-            userEntity.setName(oAuth2User.getAttribute("name"));
-            userEntity.setRole(oAuth2User.getAttribute("role"));
-            userRepository.save(userEntity);
+        String name = oAuth2User.getAttribute("login");
+        Optional<UserEntity> optUser = Optional.ofNullable(userRepository.findByName(name));
+        if (optUser.isEmpty()) {
+            UserEntity newUser = new UserEntity();
+            newUser.setName(name);
+            userRepository.save(newUser);
             log.info("New user created: {}", name);
         } else {
             log.info("User {} authenticated", name);
         }
-        return oAuth2User;
+        return new CustomOAuth2User(oAuth2User);
     }
 }
